@@ -25,8 +25,18 @@ public class BoardController {
         log.info("board/list 호출!!");
 
         m.addAttribute("bds", boardService.readBoard(cpg));
+        m.addAttribute("cpg", cpg);
+        m.addAttribute("stblk", ((cpg - 1) / 10) * 10 + 1);
 
         return "views/board/list";
+    }
+
+    @GetMapping("/view")
+    public String view(Model m, int bno) {
+
+        m.addAttribute("bd", boardService.readOneBoard(bno));
+
+        return "views/board/view";
     }
 
 }

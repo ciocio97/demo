@@ -1,5 +1,6 @@
 package com.example.demo.board.service;
 
+import com.example.demo.board.domain.Board;
 import com.example.demo.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.board.domain.dto.ListBoardDTO;
@@ -16,8 +17,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<ListBoardDTO> readBoard(int cpg) {
-        int stnum = 0;
-        return boardMapper.selectBoard(stnum);
+        return boardMapper.selectBoard(cpg);
+    }
+
+    @Override
+    public Board readOneBoard(int bno) {
+        return boardMapper.selectOneBoard(bno);
     }
 
 }
