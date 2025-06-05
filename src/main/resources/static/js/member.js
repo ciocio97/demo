@@ -135,7 +135,6 @@ const submitLoginfrm = async (frm, token, headerName) => {
 
     fetch('/api/v1/member/login', {
         method: 'POST',
-        headers: { [headerName]: token },
         body: formData
     }).then(async response => {
         if (response.ok) { // 로그인이 성공했다면

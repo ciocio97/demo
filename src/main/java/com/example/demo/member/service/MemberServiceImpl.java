@@ -1,5 +1,6 @@
 package com.example.demo.member.service;
 
+import com.example.demo.member.domain.dto.LoginDTO;
 import lombok.RequiredArgsConstructor;
 import com.example.demo.member.domain.Member;
 import com.example.demo.member.domain.dto.MemberDTO;
@@ -29,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
         // true/false 반환
     }
 
-    public Member loginMember(MemberDTO member) {
+    public Member loginMember(LoginDTO member) {
         Member findMember = memberMapper.findByUserid(member.getUserid());
 
         if (findMember == null || !findMember.getPasswd().equals(member.getPasswd())) {

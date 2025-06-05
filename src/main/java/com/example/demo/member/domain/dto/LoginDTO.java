@@ -8,11 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder
-public class MemberDTO {
+public class LoginDTO {
 
     private String userid;
     private String passwd;
-    private String name;
-    private String email;
 
 }

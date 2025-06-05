@@ -1,6 +1,7 @@
 package com.example.demo.member.controller;
 
 import com.example.demo.member.domain.Member;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,14 +26,24 @@ public class MemberController {
     }
 
     @GetMapping("/myinfo")
-    public String myinfo(Model model) {
+    public String myinfo(Model model, HttpSession session) {
+        String returnPage = "redirect:/member/login";
+//        Member user = new Member(0,"abc123","abc123","abc123",
+//                "abc123@abc123.co.kr", LocalDateTime.now());
+//        model.addAttribute("loginUser", user);
 
-        Member user = new Member(0,"abc123","abc123","abc123",
-                "abc123@abc123.co.kr", LocalDateTime.now());
+        if (session.getAttribute("loginUser") != null) {
+            model.addAttribute("loginUser", session.getAttribute("loginUser"));
+            returnPage = "views/member/myinfo";
+        }
 
-        model.addAttribute("loginUser", user);
-
-        return "views/member/myinfo";
+        return returnPage;
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "redirect:/";
+    }
 }
