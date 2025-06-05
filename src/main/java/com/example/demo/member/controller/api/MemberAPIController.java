@@ -1,5 +1,6 @@
 package com.example.demo.member.controller.api;
 
+import com.example.demo.common.utils.GoogleRecaptchaService;
 import com.example.demo.member.domain.Member;
 import com.example.demo.member.domain.dto.LoginDTO;
 import com.example.demo.member.domain.dto.MemberDTO;
@@ -19,17 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberAPIController {
 
     private final MemberService memberService;
+    private final GoogleRecaptchaService googleRecaptchaService;
 
     @PostMapping("/join")
-    public ResponseEntity<?> joinok(MemberDTO member) {
+    public ResponseEntity<?> joinok(MemberDTO member, String recaptchaToken) {
         // 회원 가입 처리시 기타오류 발생에 대한 응답코드 설정
         ResponseEntity<?> response = ResponseEntity.internalServerError().build();
 
         log.info("submit된 회원 정보 : {}", member);
+        log.info("submit된 응답 토큰 : {}", recaptchaToken);
 
         try {
             // 정상 처리시 상태코드 200으로 응답
-            memberService.newMember(member);
+            if (googleRecaptchaService.verifyRecaptcha(recaptchaToken))
+                memberService.newMember(member);
+            else
+                throw new IllegalStateException("자동가입 방지 오류!!");
             response = ResponseEntity.ok().build();
         } catch (IllegalStateException e) {
             // 비정상 처리시 상태코드 400으로 응답 - 클라이언트 잘못
